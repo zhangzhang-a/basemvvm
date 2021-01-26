@@ -1,0 +1,44 @@
+package com.example.mykotlin.base
+
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.ViewModelProvider
+import com.example.basemvvm.base.BaseViewModel
+
+/**
+ * BaseActivity基类
+ */
+abstract class BaseActivity<VM : BaseViewModel, DB : ViewDataBinding>(
+    var layoutId: Int,
+    val vmClass: Class<VM>
+) : AppCompatActivity(), IView {
+
+    protected lateinit var mViewModel: VM
+    protected lateinit var mDataBinding: DB
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mDataBinding = DataBindingUtil.setContentView(this, layoutId)
+        mViewModel = ViewModelProvider(this).get(vmClass)
+        initView()
+        initVM()
+        initData()
+        initVariable()
+    }
+
+
+    protected abstract fun initView()
+    protected abstract fun initVM()
+    protected abstract fun initData()
+    protected abstract fun initVariable()
+
+    override fun showLoading() {
+
+    }
+
+    override fun showTips(tips: String) {
+
+    }
+
+}
